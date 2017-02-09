@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title> cropper</title>
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/cropper.min.js"></script>
+		<link rel="stylesheet" href="js/cropper.min.css" />
+		<style>
+			.container {
+				width: 50%;
+				height: auto;
+				overflow: hidden;
+			}
+			
+			.container img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.img-preview {
+				width: 150px;
+				height: 150px;
+				border: 1px solid red;
+				overflow: hidden;
+			}
+			
+			.data {
+				font-size: 12px;
+			}
+			
+			.button {
+				margin: 10px 0;
+			}
+			
+			.otherbtn {
+				display: none;
+				margin: 10px 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<input id="btn1" type="file" accept="image/*,camera" capture="camera" style="opacity: 0;" />
+		<div class="container">
+			<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg">
+		</div>
+		<button class="button">开始编辑</button>
+		<div class="otherbtn">
+			<button class="button1">放大</button>
+			<button class="button2">缩小</button>
+			<button class="button4">左旋转</button>
+			<button class="button5">右旋转</button>
+			<button class="button3">确定</button>
+		</div>
+
+		</div>
+		<div class="img-preview">
+			<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg" class="">
+		</div>
+		<p class="data"></p>
+		<button class="main">上传</button>
+	</body>
+	<script>
+		$(function() {
+			$(".button").click(function() {
+				$(".otherbtn").show();
+				$('.container > img').cropper({
+					preview: '.img-preview', //不同
+					aspectRatio: 1, //裁剪比例，NaN-自由选择区域
+					autoCropArea: 0.7,
+					crop: function(data) {
+						// Output the result data for cropping image.
+						var json = [
+							'{"x":' + data.x,
+							'"y":' + data.y,
+							'"height":' + data.height,
+							'"width":' + data.width,
+							'"rotate":' + data.rotate + '}'
+						].join();
+						$(".data").html(json);
+
+					}
+				});
+			})
+			$(".button1").click(function() {
+				$('.container > img').cropper('zoom', 0.1);
+
+			})
+			$(".button2").click(function() {
+				$('.container > img').cropper('zoom', -0.1);
+
+			})
+			$(".button4").click(function() {
+				$('.container > img').cropper('rotate', -90)
+
+			})
+			$(".button5").click(function() {
+				$('.container > img').cropper('rotate', 90)
+
+			})
+			$(".main").click(function() {
+				console.log('模拟点击。。。');
+				$('#btn1').trigger('click');
+
+			})
+			var fileName; //选择上传的文件名
+			$('#btn1').change(function() {
+				var file = this.files[0];
+				fileName = file.name;
+				var reader = new FileReader();
+				//reader回调，重新初始裁剪区
+				reader.onload = function() {
+					// 通过 reader.result 来访问生成的 DataURL
+					var url = reader.result;
+					alert(url)
+						//选择图片后重新初始裁剪区
+					$('.container > img').attr('src', url);
+				};
+				reader.readAsDataURL(file);
+			});
+			var $image = $('.container > img');
+			$('.button3').click(function() {
+				//				var src = $image.eq(0).attr("src");
+				//				var canvasdata = $image.cropper("getCanvasData");
+				//				var cropBoxData = $image.cropper('getCropBoxData');
+				//				
+				//				convertToData(src, canvasdata, cropBoxData, function(basechar) {
+				////					alert(base64)
+				//						$('.container > img').cropper('reset', true).cropper('replace',src);    
+				//				});
+				$(".otherbtn").hide();
+				$('.container > img').cropper('clear', true)
+			})
+
+			function convertToData(url, canvasdata, cropdata, callback) {
+				var cropw = cropdata.width; // 剪切的宽
+				var croph = cropdata.height; // 剪切的宽
+				var imgw = canvasdata.width; // 图片缩放或则放大后的高
+				var imgh = canvasdata.height; // 图片缩放或则放大后的高
+				var poleft = canvasdata.left - cropdata.left; // canvas定位图片的左边位置
+				var potop = canvasdata.top - cropdata.top; // canvas定位图片的上边位置
+				var canvas = document.createElement("canvas");
+				var ctx = canvas.getContext('2d');
+				canvas.width = cropw;
+				canvas.height = croph;
+				var img = new Image();
+				img.src = url;
+				img.onload = function() {
+					this.width = imgw;
+					this.height = imgh;
+					// 这里主要是懂得canvas与图片的裁剪之间的关系位置
+					ctx.drawImage(this, poleft, potop, this.width, this.height);
+					var base64 = canvas.toDataURL('image/jpg', 1); // 这里的“1”是指的是处理图片的清晰度（0-1）之间，当然越小图片越模糊，处理后的图片大小也就越小
+					callback && callback(base64) // 回调base64字符串
+				}
+			}
+		})
+	</script>
+
+</html>
