@@ -9,6 +9,10 @@
 		<script type="text/javascript" src="js/cropper.min.js"></script>
 		<link rel="stylesheet" href="js/cropper.min.css" />
 		<style>
+			body {
+				text-align: center;
+			}
+			
 			.container {
 				width: 50%;
 				height: auto;
@@ -40,29 +44,32 @@
 				display: none;
 				margin: 10px 0;
 			}
-			.main{
+			
+			.main {
 				width: 65px;
 				height: 65px;
 			}
-			.text{
+			
+			.text {
 				font-size: 13px;
 			}
+			
+			button {}
 		</style>
 	</head>
 
 	<body>
 
-	
 		<img src="img/add.png" class="main">
 		<p class="text">点击上传图片</p>
 		<input id="btn1" type="file" accept="image/*,camera" capture="camera" style="opacity: 0;" />
 		<div class="mainContent" style="display: none;">
 			<div class="container" style="float: left;">
-				<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg">
+				<img src="">
 			</div>
 			<div style="clear: both;"></div>
 			<div class="img-preview">
-				<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg" class="">
+				<img src="">
 			</div>
 			<button class="button">开始编辑</button>
 			<div class="otherbtn">
@@ -72,7 +79,7 @@
 				<button class="button5">右旋转</button>
 				<button class="button3">确定</button>
 			</div>
-				<p class="data"></p>
+			<p class="data"></p>
 		</div>
 
 	</body>
@@ -121,7 +128,7 @@
 			})
 			var fileName; //选择上传的文件名
 			$('#btn1').change(function() {
-			
+
 				var file = this.files[0];
 				fileName = file.name;
 				var reader = new FileReader();
@@ -133,7 +140,7 @@
 						//选择图片后重新初始裁剪区
 					$('.container > img').attr('src', url);
 					$('.img-preview> img').attr('src', url);
-						$(".mainContent").show();
+					$(".mainContent").show();
 				};
 				reader.readAsDataURL(file);
 			});
