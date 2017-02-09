@@ -25,6 +25,7 @@
 				height: 150px;
 				border: 1px solid red;
 				overflow: hidden;
+				margin-top: 10px;
 			}
 			
 			.data {
@@ -43,25 +44,29 @@
 	</head>
 
 	<body>
+
+	
+		<button class="main">立即上传</button>
 		<input id="btn1" type="file" accept="image/*,camera" capture="camera" style="opacity: 0;" />
-		<div class="container">
-			<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg">
-		</div>
-		<button class="button">开始编辑</button>
-		<div class="otherbtn">
-			<button class="button1">放大</button>
-			<button class="button2">缩小</button>
-			<button class="button4">左旋转</button>
-			<button class="button5">右旋转</button>
-			<button class="button3">确定</button>
+		<div class="mainContent" style="display: none;">
+			<div class="container" style="float: left;">
+				<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg">
+			</div>
+			<div style="clear: both;"></div>
+			<div class="img-preview">
+				<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg" class="">
+			</div>
+			<button class="button">开始编辑</button>
+			<div class="otherbtn">
+				<button class="button1">放大</button>
+				<button class="button2">缩小</button>
+				<button class="button4">左旋转</button>
+				<button class="button5">右旋转</button>
+				<button class="button3">确定</button>
+			</div>
+				<p class="data"></p>
 		</div>
 
-		</div>
-		<div class="img-preview">
-			<img src="img/42166d224f4a20a44058390794529822730ed0af.jpg" class="">
-		</div>
-		<p class="data"></p>
-		<button class="main">上传</button>
 	</body>
 	<script>
 		$(function() {
@@ -108,6 +113,7 @@
 			})
 			var fileName; //选择上传的文件名
 			$('#btn1').change(function() {
+			
 				var file = this.files[0];
 				fileName = file.name;
 				var reader = new FileReader();
@@ -115,9 +121,11 @@
 				reader.onload = function() {
 					// 通过 reader.result 来访问生成的 DataURL
 					var url = reader.result;
-					alert(url)
+					console.log(url)
 						//选择图片后重新初始裁剪区
 					$('.container > img').attr('src', url);
+					$('.img-preview> img').attr('src', url);
+						$(".mainContent").show();
 				};
 				reader.readAsDataURL(file);
 			});
