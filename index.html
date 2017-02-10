@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 
 	<head>
 		<meta charset="utf-8">
@@ -10,13 +10,27 @@
 		<link rel="stylesheet" href="js/cropper.min.css" />
 		<style>
 			body {
+				height: 100%;
 				text-align: center;
+				background-image: url(img/139320950448462778.png);
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
 			}
 			
 			.container {
-				width: 50%;
-				height: auto;
+				width: 200px;
 				overflow: hidden;
+				height: 240px;
+				margin: 0 auto;
+				background-color: #fff;
+				position: relative;
+				z-index: 1000;
+				margin-top: 45%;
+				left: 50%;
+				margin-left: -100px;
+				background-image: url(img/add.png);
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
 			}
 			
 			.container img {
@@ -30,6 +44,7 @@
 				border: 1px solid red;
 				overflow: hidden;
 				margin-top: 10px;
+				display: none;
 			}
 			
 			.data {
@@ -50,80 +65,185 @@
 				height: 65px;
 			}
 			
+			.otherbtn {
+				position: fixed;
+				z-index: 1000;
+			}
+			
 			.text {
 				font-size: 13px;
 			}
 			
-			button {}
+			.fixed {
+				width: 100%;
+				background-color: #000000;
+				opacity: 0.8;
+				position: fixed;
+				z-index: 100;
+				top: 0;
+				left: 0;
+				right: 0;
+				display: none;
+				bottom: 0;
+			}
+			
+			.fixed_head {
+				width: 100%;
+				background-color: #fff;
+				height: 35px;
+				line-height: 35px;
+				position: fixed;
+				z-index: 101;
+				top: 0;
+				display: none;
+				left: 0;
+				right: 0;
+				font-size: 13px;
+			}
+			
+			.fixed_head a {
+				border: 1px solid #6699FF;
+				height: 25px;
+				line-height: 25px;
+				margin-top: 5px;
+				padding: 0 10px;
+				border-radius: 5px;
+				color: #6699FF;
+			}
+			
+			.cancel {
+				float: left;
+				margin-left: 10px;
+			}
+			
+			.confirm {
+				float: right;
+				margin-right: 10px;
+			}
+			
+			.fixed_bottom {
+				width: 100%;
+				display: none;
+				background-color: #000;
+				height: 140px;
+				line-height: 35px;
+				position: fixed;
+				z-index: 101;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				font-size: 13px;
+			}
+			
+			.fixed_bottom img {
+				width: 35px;
+				margin-top: 50px;
+				display: inline-block;
+				margin-left: 4%;
+			}
 		</style>
 	</head>
 
 	<body>
-
-		<img src="img/add.png" class="main">
-		<p class="text">点击上传图片</p>
 		<input id="btn1" type="file" accept="image/*,camera" capture="camera" style="opacity: 0;" />
-		<div class="mainContent" style="display: none;">
-			<div class="container" style="float: left;">
-				<img src="">
-			</div>
-			<div style="clear: both;"></div>
-			<div class="img-preview">
-				<img src="">
-			</div>
-			<button class="button">开始编辑</button>
-			<div class="otherbtn">
-				<button class="button1">放大</button>
-				<button class="button2">缩小</button>
-				<button class="button4">左旋转</button>
-				<button class="button5">右旋转</button>
-				<button class="button3">确定</button>
-			</div>
-			<p class="data"></p>
+
+		<div class="container" style="float: left;">
+			<img src="">
+		</div>
+		<div style="clear: both;"></div>
+		<div class="img-preview">
+			<img src="">
+		</div>
+		<!--		<button class="button">开始编辑</button>-->
+		<div class="fixed"></div>
+		<div class="fixed_head">
+			<a class="cancel">取消
+			</a>
+			编辑图片框
+			<a class="confirm">确定</a>
+
+		</div>
+		<div class="fixed_bottom">
+			<img src="img/jia.png" class="add">
+			<img src="img/jian.png" class="reduce">
+			<img src="img/left.png" class="left">
+			<img src="img/right.png" class="right">
+			<img src="img/delete.png" class="delete">
+
 		</div>
 
 	</body>
 	<script>
 		$(function() {
-			$(".button").click(function() {
-				$(".otherbtn").show();
-				$('.container > img').cropper({
-					preview: '.img-preview', //不同
-					aspectRatio: 1, //裁剪比例，NaN-自由选择区域
-					autoCropArea: 0.7,
-					crop: function(data) {
-						// Output the result data for cropping image.
-						var json = [
-							'{"x":' + data.x,
-							'"y":' + data.y,
-							'"height":' + data.height,
-							'"width":' + data.width,
-							'"rotate":' + data.rotate + '}'
-						].join();
-						$(".data").html(json);
+			var json; //参见的数据
+			$(".cancel").click(function() {
+					$('.container > img').cropper('reset', true);
+					$('.container > img').cropper('clear', true);
+					$(".fixed").hide();
+					$(".fixed_head").hide();
+					$(".fixed_bottom").hide();
+				}) //取消
+			$(".confirm").click(function() {
+					$(".fixed").hide();
+					$(".fixed_head").hide();
+					$(".fixed_bottom").hide();
+						$('.container > img').cropper('clear', true);
+					$('.container > img').cropper('disable', true);
+				
+				}) //确定
+			$(".container").click(function() {
+				if($(this).children().attr('src') == "") {
+					console.log('模拟点击。。。');
+					$('#btn1').trigger('click');
+				} else {
+					$(".fixed").show();
+					$(".fixed_head").show();
+					$(".fixed_bottom").show();
+					$('.container > img').cropper({
+						preview: '.container', //不同
+						aspectRatio: 1, //裁剪比例，NaN-自由选择区域
 
-					}
-				});
+						modal: false,
+						crop: function(data) {
+							// Output the result data for cropping image.
+							json = [
+								'{"x":' + data.x,
+								'"y":' + data.y,
+								'"height":' + data.height,
+								'"width":' + data.width,
+								'"rotate":' + data.rotate + '}'
+							].join();
+							$(".data").html(json);
+
+						}
+					});
+				}
+
 			})
-			$(".button1").click(function() {
+			$(".add").click(function() {
 				$('.container > img').cropper('zoom', 0.1);
 
 			})
-			$(".button2").click(function() {
+			$(".reduce").click(function() {
 				$('.container > img').cropper('zoom', -0.1);
 
 			})
-			$(".button4").click(function() {
+			$(".left").click(function() {
 				$('.container > img').cropper('rotate', -90)
 
 			})
-			$(".button5").click(function() {
+			$(".right").click(function() {
 				$('.container > img').cropper('rotate', 90)
 
 			})
-			$(".main").click(function() {
-				console.log('模拟点击。。。');
-				$('#btn1').trigger('click');
+			$(".delete").click(function() {
+				$(".fixed").hide();
+				$(".fixed_head").hide();
+				$(".fixed_bottom").hide();
+				$('.container > img').cropper('reset', true);
+				$('.container > img').cropper('clear', true);
+				$('.container > img').attr('src', '');
+				$(".cropper-container").hide();
 
 			})
 			var fileName; //选择上传的文件名
@@ -136,11 +256,11 @@
 				reader.onload = function() {
 					// 通过 reader.result 来访问生成的 DataURL
 					var url = reader.result;
-					console.log(url)
-						//选择图片后重新初始裁剪区
+
+					//选择图片后重新初始裁剪区
 					$('.container > img').attr('src', url);
 					$('.img-preview> img').attr('src', url);
-					$(".mainContent").show();
+
 				};
 				reader.readAsDataURL(file);
 			});
