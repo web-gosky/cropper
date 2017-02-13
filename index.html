@@ -5,8 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<title> cropper</title>
-		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="js/cropper.min.js"></script>
+
 		<link rel="stylesheet" href="js/cropper.min.css" />
 		<style>
 			body {
@@ -15,12 +14,13 @@
 				background-image: url(img/139320950448462778.png);
 				background-repeat: no-repeat;
 				background-size: 100% 100%;
+				margin: 0;
 			}
 			
 			.container {
 				width: 200px;
 				overflow: hidden;
-				height: 240px;
+				height: 240px!important;
 				margin: 0 auto;
 				background-color: #fff;
 				position: relative;
@@ -34,13 +34,14 @@
 			}
 			
 			.container img {
+				max-width: 100%;
 				width: 100%;
 				height: 100%;
 			}
 			
 			.img-preview {
-				width: 150px;
-				height: 150px;
+				width: 200px;
+				height: 240px;
 				border: 1px solid red;
 				overflow: hidden;
 				margin-top: 10px;
@@ -173,12 +174,17 @@
 		</div>
 
 	</body>
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/cropper.min.js"></script>
 	<script>
 		$(function() {
 			var json; //参见的数据
+			$.fn.cropper.setDefaults({guides:false,highlight:false,modal:false});
 			$(".cancel").click(function() {
+
 					$('.container > img').cropper('reset', true);
 					$('.container > img').cropper('clear', true);
+					$('.container > img').cropper('disable', true);
 					$(".fixed").hide();
 					$(".fixed_head").hide();
 					$(".fixed_bottom").hide();
@@ -187,23 +193,27 @@
 					$(".fixed").hide();
 					$(".fixed_head").hide();
 					$(".fixed_bottom").hide();
-						$('.container > img').cropper('clear', true);
+					$('.container > img').cropper('clear', true);
 					$('.container > img').cropper('disable', true);
-				
+
 				}) //确定
 			$(".container").click(function() {
 				if($(this).children().attr('src') == "") {
 					console.log('模拟点击。。。');
+
 					$('#btn1').trigger('click');
 				} else {
 					$(".fixed").show();
 					$(".fixed_head").show();
 					$(".fixed_bottom").show();
+					$('.container > img').cropper('enable', true);
 					$('.container > img').cropper({
 						preview: '.container', //不同
 						aspectRatio: 1, //裁剪比例，NaN-自由选择区域
+						autoCropArea: 1,
+								guides:false,
+						autoCrop: false,
 
-						modal: false,
 						crop: function(data) {
 							// Output the result data for cropping image.
 							json = [
@@ -240,7 +250,7 @@
 				$(".fixed").hide();
 				$(".fixed_head").hide();
 				$(".fixed_bottom").hide();
-				$('.container > img').cropper('reset', true);
+
 				$('.container > img').cropper('clear', true);
 				$('.container > img').attr('src', '');
 				$(".cropper-container").hide();
@@ -259,7 +269,7 @@
 
 					//选择图片后重新初始裁剪区
 					$('.container > img').attr('src', url);
-					$('.img-preview> img').attr('src', url);
+					//					$('.img-preview> img').attr('src', url);
 
 				};
 				reader.readAsDataURL(file);
