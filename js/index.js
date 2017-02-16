@@ -218,6 +218,7 @@ $(function() {
 		reader.readAsDataURL(file);
             $.ajax({
                 type: "post",
+                 dataType:"json",
                 url: "https://dashboard.shiyi.co/api/v1/qiniu/upload_token",
                 data: {
                     bucket_name:'tapsbook',
