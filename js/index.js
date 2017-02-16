@@ -201,6 +201,7 @@ $(function() {
 	var $selectedFile = $('.selected-file');
 	var $progress = $(".progress");
 	var $uploadedResult = $('.uploaded-result');
+		var url;
 	$("#userfile").change(function() { // you can ues 'onchange' here to uplpad automatically after select a file
 		$(".container").attr("for", "");
 		var file = this.files[0];
@@ -209,13 +210,25 @@ $(function() {
 		//reader回调，重新初始裁剪区
 		reader.onload = function() {
 			// 通过 reader.result 来访问生成的 DataURL
-			var url = reader.result;
+			url = reader.result;
 			//选择图片后重新初始裁剪区
 			$('.container img').attr('src', url);
 			$('.slot img').attr('src', url);
 		};
 		reader.readAsDataURL(file);
-
+            $.ajax({
+                type: "post",
+                url: "https://dashboard.shiyi.co/api/v1/qiniu/upload_token",
+                data: {
+                    bucket_name:'tapsbook',
+                    file_key:url
+ 
+                },
+                success: function (result) {
+               console.log(result);
+                    
+                }
+            });
 		$uploadedResult.html('');
 		var selectedFile = $userfile.val();
 		if(selectedFile) {
@@ -254,12 +267,13 @@ $(function() {
 				return myXhr;
 			},
 			success: function(res) {
-				console.log("成功：" + JSON.stringify(res));
+				console.log("成功：" + JSON.stringify(res.key));
 				//				var str = '<span>已上传：' + res.key + '</span>';
 				//				if(res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
-				//					$(".sort img").attr("src", domain + res.key);
+				//					$(".sort img").attr("src", domain + res.cc;
 				//				}
 				//				$uploadedResult.html(str);
+	
 			},
 			error: function(res) {
 				console.log("失败:" + JSON.stringify(res));
