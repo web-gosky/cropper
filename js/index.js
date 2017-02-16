@@ -287,8 +287,9 @@ $(function() {
 			$(".fixed_head").show();
 			$(".fixed_bottom").show();
 			$(".slot").show();
+			var aspect = $(".slot").width() / $(".slot").height();
 			$('.slot > img').cropper({ //不同
-				aspectRatio: 1, //裁剪比例，NaN-自由选择区域
+				aspectRatio: aspect, //裁剪比例，NaN-自由选择区域
 				modal: false,
 				crop: function(data) {
 					// Output the result data for cropping image.
@@ -311,7 +312,7 @@ $(function() {
 		}) //重新上传
 	$(".cancelone").click(function() {
 			$('.slot > img').cropper('reset', true);
-			$('.slot > img').cropper('clear', true);
+	
 			$(".fixed").hide();
 			$(".fixed_head").hide();
 			$(".fixed_bottom").hide();
@@ -325,8 +326,10 @@ $(function() {
 
 			$(".page").show();
 			$(".slot").hide();
-			$('.slot > img').cropper('clear', true);
 			alert(json);
+			$('.slot > img').cropper('reset', true);
+
+
 		}) //确ding
 	$(".add").click(function() {
 		$('.slot > img').cropper('zoom', 0.1);
