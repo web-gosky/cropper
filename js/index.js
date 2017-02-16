@@ -202,6 +202,7 @@ $(function() {
 	var $progress = $(".progress");
 	var $uploadedResult = $('.uploaded-result');
 	$("#userfile").change(function() { // you can ues 'onchange' here to uplpad automatically after select a file
+		$(".container").attr("for", "");
 		var file = this.files[0];
 		fileName = file.name;
 		var reader = new FileReader();
@@ -209,10 +210,11 @@ $(function() {
 		reader.onload = function() {
 			// 通过 reader.result 来访问生成的 DataURL
 			var url = reader.result;
-				//选择图片后重新初始裁剪区
+			//选择图片后重新初始裁剪区
 			$('.container img').attr('src', url);
+			$('.slot img').attr('src', url);
 		};
-			reader.readAsDataURL(file);
+		reader.readAsDataURL(file);
 
 		$uploadedResult.html('');
 		var selectedFile = $userfile.val();
@@ -253,11 +255,11 @@ $(function() {
 			},
 			success: function(res) {
 				console.log("成功：" + JSON.stringify(res));
-//				var str = '<span>已上传：' + res.key + '</span>';
-//				if(res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
-//					$(".container img").attr("src", domain + res.key);
-//				}
-//				$uploadedResult.html(str);
+				//				var str = '<span>已上传：' + res.key + '</span>';
+				//				if(res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+				//					$(".sort img").attr("src", domain + res.key);
+				//				}
+				//				$uploadedResult.html(str);
 			},
 			error: function(res) {
 				console.log("失败:" + JSON.stringify(res));
@@ -266,5 +268,80 @@ $(function() {
 		});
 		return false;
 	});
+	$(".container").click(function() {
+		if($(this).attr("for") == "") {
+			$(".btngroup").show();
+		} else {
 
+		}
+	})
+	var json;
+	$(".cancal").click(function() {
+			$(".btngroup").hide();
+		}) //取消
+	$(".edit").click(function() {
+			$(".btngroup").hide();
+			$(".page").hide();
+			$(".fixed").show();
+
+			$(".fixed_head").show();
+			$(".fixed_bottom").show();
+			$(".slot").show();
+			$('.slot > img').cropper({ //不同
+				aspectRatio: 1, //裁剪比例，NaN-自由选择区域
+				modal: false,
+				crop: function(data) {
+					// Output the result data for cropping image.
+					json = [
+						'{"x":' + data.x,
+						'"y":' + data.y,
+						'"height":' + data.height,
+						'"width":' + data.width,
+						'"rotate":' + data.rotate + '}'
+					].join();
+					console.log(json);
+
+				}
+			});
+		}) //编辑照片
+	$(".new").click(function() {
+			$(".container").attr("for", "userfile");
+			$(".container").trigger('click');
+			$(".btngroup").hide();
+		}) //重新上传
+	$(".cancelone").click(function() {
+			$('.slot > img').cropper('reset', true);
+			$('.slot > img').cropper('clear', true);
+			$(".fixed").hide();
+			$(".fixed_head").hide();
+			$(".fixed_bottom").hide();
+			$(".page").show();
+			$(".slot").hide();
+		}) //取消
+	$(".confirm").click(function() {
+			$(".fixed").hide();
+			$(".fixed_head").hide();
+			$(".fixed_bottom").hide();
+
+			$(".page").show();
+			$(".slot").hide();
+			$('.slot > img').cropper('clear', true);
+			alert(json);
+		}) //确ding
+	$(".add").click(function() {
+		$('.slot > img').cropper('zoom', 0.1);
+
+	})
+	$(".reduce").click(function() {
+		$('.slot > img').cropper('zoom', -0.1);
+
+	})
+	$(".left").click(function() {
+		$('.slot > img').cropper('rotate', -90)
+
+	})
+	$(".right").click(function() {
+		$('.slot > img').cropper('rotate', 90)
+
+	})
 })

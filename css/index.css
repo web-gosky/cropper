@@ -10,6 +10,11 @@ body {
 	background-color: #ecefef;
 }
 
+p {
+	padding: 0;
+	margin: 0;
+}
+
 .page {
 	width: 90%;
 	margin: 0 auto;
@@ -31,7 +36,36 @@ body {
 	display: block;
 	position: relative;
 	z-index: 10;
-	
+}
+.slot {
+	width: 60%;
+	overflow: hidden;
+	margin: 0 auto;
+	margin-top: 20%;
+	display: block;
+	position: relative;
+	z-index: 10000;
+	display: none;
+}
+
+
+.btngroup {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #fff;
+	border-radius: 5px;
+	display: none;
+	height: 120px;
+}
+
+.btngroup p {
+	text-align: center;
+	width: 100%;
+	font-size: 14px;
+	height: 40px;
+	line-height: 40px;
 }
 
 .container img {
@@ -39,8 +73,13 @@ body {
 	height: 100%;
 }
 
+.edit {
+	border-bottom: 1px solid #999;
+	border-top: 1px solid #999;
+}
+
 .graph {
-	width:;
+	width: ;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -48,7 +87,6 @@ body {
 	height: 25px;
 	z-index: 100;
 	text-align: center;
-	
 }
 
 #bar {
@@ -61,4 +99,76 @@ body {
 	line-height: 25px;
 	color: #FFF;
 	font-size: 14px;
+}
+
+.fixed {
+	width: 100%;
+	background-color: #000000;
+	opacity: 0.8;
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: none;
+	bottom: 0;
+}
+
+.fixed_head {
+	width: 100%;
+	background-color: #fff;
+	height: 35px;
+	line-height: 35px;
+	position: fixed;
+	z-index: 101;
+	top: 0;
+	display: none;
+	left: 0;
+	right: 0;
+	font-size: 13px;
+	    text-align: center;
+}
+.slot img{
+	width: 100%;
+	height: 100%;
+}
+.fixed_head a {
+	border: 1px solid #6699FF;
+	height: 25px;
+	line-height: 25px;
+	margin-top: 5px;
+	padding: 0 10px;
+	border-radius: 5px;
+	color: #6699FF;
+}
+
+.cancelone {
+	float: left;
+	margin-left: 10px;
+}
+
+.confirm {
+	float: right;
+	margin-right: 10px;
+}
+
+.fixed_bottom {
+	width: 100%;
+	display: none;
+	background-color: #000;
+	height: 140px;
+	line-height: 35px;
+	position: fixed;
+	z-index: 101;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	font-size: 13px;
+}
+
+.fixed_bottom img {
+	width: 35px;
+	margin-top: 50px;
+	display: inline-block;
+	margin-left: 4%;
 }
