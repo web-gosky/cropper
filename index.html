@@ -9,14 +9,13 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<script>
 			var domain = "http://77g5qi.com1.z0.glb.clouddn.com/"; // you bucket domain  eg: http://xxx.bkt.clouddn.com
-			
 		</script>
 	</head>
 
 	<body>
 		<form id="testform" method="post" enctype="multipart/form-data">
 			<input name="key" id="key" type="hidden" value="">
-			<input name="token" id="token"  type="hidden" value="">
+			<input name="token" id="token" type="hidden" value="">
 			<input id="userfile" name="file" type="file" />
 
 			<input name="accept" type="hidden" />
@@ -24,17 +23,16 @@
 		<div class="page">
 			<label class="container" for="userfile">
 				<img src="">
+				<div class="graph"> 
+			<strong id="bar" style="width:0%;"></strong> 
+		</div> 
 			</label>
 
 		</div>
-
-		<div class="selected-file"></div>
-		<div class="progress"></div>
-		<div class="uploaded-result"></div>
 	</body>
 
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="js/cryptojs.js" ></script>
+	<script type="text/javascript" src="js/cryptojs.js"></script>
 	<script type="text/javascript" src="js/cropper.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 

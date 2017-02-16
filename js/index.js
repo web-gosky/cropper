@@ -1,4 +1,29 @@
 $(function() {
+
+	var winWidth;
+	if(window.innerWidth) {
+		winWidth = window.innerWidth;
+	} else if((document.body) && (document.body.clientWidth)) {
+		winWidth = document.body.clientWidth;
+	}
+	var wiDth = parseFloat(winWidth);
+	$(".page").height(11 / 9 * wiDth);
+	var Width = $(".container").width()
+	$(".container").height(11 / 9 * Width);
+
+	$(window).resize(function() {
+		if(window.innerWidth) {
+			winWidth = window.innerWidth;
+		} else if((document.body) && (document.body.clientWidth)) {
+			winWidth = document.body.clientWidth;
+		}
+		var wiDth = parseFloat(winWidth);
+		$(".page").height(11 / 9 * wiDth);
+		var Width = $(".container").width()
+		$(".container").height(11 / 9 * Width);
+
+	});
+
 	function utf16to8(str) {
 		var out, i, len, c;
 		out = "";
@@ -177,6 +202,18 @@ $(function() {
 	var $progress = $(".progress");
 	var $uploadedResult = $('.uploaded-result');
 	$("#userfile").change(function() { // you can ues 'onchange' here to uplpad automatically after select a file
+		var file = this.files[0];
+		fileName = file.name;
+		var reader = new FileReader();
+		//reader回调，重新初始裁剪区
+		reader.onload = function() {
+			// 通过 reader.result 来访问生成的 DataURL
+			var url = reader.result;
+				//选择图片后重新初始裁剪区
+			$('.container img').attr('src', url);
+		};
+			reader.readAsDataURL(file);
+
 		$uploadedResult.html('');
 		var selectedFile = $userfile.val();
 		if(selectedFile) {
@@ -198,10 +235,17 @@ $(function() {
 				myXhr = $.ajaxSettings.xhr();
 				if(myXhr.upload) {
 					myXhr.upload.addEventListener('progress', function(e) {
-						// console.log(e);
+						console.log(e);
 						if(e.lengthComputable) {
 							var percent = e.loaded / e.total * 100;
 							$progress.html('上传：' + e.loaded + "/" + e.total + " bytes. " + percent.toFixed(2) + "%");
+							$("#bar").width(+percent.toFixed(2) + "%");
+							$("#bar").html(+percent.toFixed(2) + "%");
+							if(percent.toFixed(2) == 100) {
+								$("#bar").html("上传成功");
+							}
+							$(".container").css("height", "auto")
+
 						}
 					}, false);
 				}
@@ -209,11 +253,11 @@ $(function() {
 			},
 			success: function(res) {
 				console.log("成功：" + JSON.stringify(res));
-				var str = '<span>已上传：' + res.key + '</span>';
-				if(res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
-					$(".container img").attr("src",domain + res.key );
-				}
-				$uploadedResult.html(str);
+//				var str = '<span>已上传：' + res.key + '</span>';
+//				if(res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+//					$(".container img").attr("src", domain + res.key);
+//				}
+//				$uploadedResult.html(str);
 			},
 			error: function(res) {
 				console.log("失败:" + JSON.stringify(res));
