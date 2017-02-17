@@ -196,6 +196,28 @@ $(function() {
 	console && console.log("token=", token);
 	$("#token").val(token)
 	//生成token
+			$('.slot img').cropper({ //不同
+				//preview: ".container",
+				aspectRatio: 202 / 247, //裁剪比例，NaN-自由选择区域
+				modal: false,
+				resizable: false,
+
+
+				crop: function(data) {
+					// Output the result data for cropping image.
+			
+					json = [
+						'{"x":' + data.x,
+						'"y":' + data.y,
+						'"height":' + data.height,
+						'"width":' + data.width,
+						'"rotate":' + data.rotate + '}'
+					].join();
+
+					console.log(json);
+
+				}
+			});
 	var $key = $('#key'); // file name    eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
 	var $userfile = $('#userfile'); // the file you selected
 	var $selectedFile = $('.selected-file');
@@ -214,7 +236,8 @@ $(function() {
 			//选择图片后重新初始裁剪区
 			$('.container img').attr('src', url1);
 			$('.slot img').attr('src', url1);
-				$('.slot > img').cropper('replace',url1);
+						
+	
 		};
 		reader.readAsDataURL(file);
 		//		$.ajax({
@@ -296,50 +319,37 @@ $(function() {
 		$(".btngroup").hide();
 	}) //取消
 	$(".edit").click(function() {
+					
+				$('.slot > img').cropper('replace',$(".container img").attr("src"));
 		$(".btngroup").hide();
 
 		$(".fixed").show();
-	
 
 		$(".fixed_head").show();
 		$(".fixed_bottom").show();
 		$(".slot").show();
 
 		$(".page").hide();
-		
-	
-			$('.slot > img').cropper().clear();
-		$('.slot img').cropper({ //不同
-			//preview: ".container",
-	
-			aspectRatio: 202 / 247, //裁剪比例，NaN-自由选择区域
-			modal: false,
-			resizable: false,
 
-
-
-			crop: function(data) {
-				// Output the result data for cropping image.
-				json = [
-					'{"x":' + data.x,
-					'"y":' + data.y,
-					'"height":' + data.height,
-					'"width":' + data.width,
-					'"rotate":' + data.rotate + '}'
-				].join();
-				console.log(json);
-
-			}
-		});
 
 	}) //编辑照片
 	$(".new").click(function() {
 		$(".container").attr("for", "userfile");
+			$('.slot > img').cropper('reset',true);
 		$(".container").trigger('click');
 		$(".btngroup").hide();
-			
+		
+//			var $image = $('.slot > img');
+//		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
+//		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
+//		$(".container img").attr("src", imgurl);
+//		$(".slot img").attr("src", imgurl);
+//
+
+		
+
 	}) //重新上传
-	
+
 	$(".cancelone").click(function() {
 		//			css
 
@@ -361,10 +371,9 @@ $(function() {
 		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
 		$(".container img").attr("src", imgurl);
 		$(".slot img").attr("src", imgurl);
-		
-			$('.slot > img').cropper('replace',imgurl);
-			
-	
+
+		$('.slot > img').cropper('replace', imgurl);
+
 	}) //确ding
 	$(".add").click(function() {
 		$('.slot > img').cropper('zoom', 0.1);
