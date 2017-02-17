@@ -312,7 +312,7 @@ $(function() {
 		$('.slot img').cropper({ //不同
 			//preview: ".container",
 	
-			aspectRatio: 1, //裁剪比例，NaN-自由选择区域
+			aspectRatio: 202 / 247, //裁剪比例，NaN-自由选择区域
 			modal: false,
 			resizable: false,
 
@@ -357,7 +357,7 @@ $(function() {
 		$(".page").show();
 		$(".slot").hide();
 		var $image = $('.slot > img');
-		var dataURL = $image.cropper("getCroppedCanvas"); //
+		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
 		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
 		$(".container img").attr("src", imgurl);
 		$(".slot img").attr("src", imgurl);
