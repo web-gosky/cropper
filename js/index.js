@@ -237,7 +237,7 @@ $(function() {
 			$('.container img').attr('src', url1);
 			$('.slot img').attr('src', url1);
 						
-	
+	$("#bar").show();
 		};
 		reader.readAsDataURL(file);
 		//		$.ajax({
@@ -284,6 +284,9 @@ $(function() {
 							$("#bar").html(+percent.toFixed(2) + "%");
 							if(percent.toFixed(2) == 100) {
 								$("#bar").html("上传成功");
+								setTimeout(function(){
+									$("#bar").hide();
+								},3000)
 							}
 
 						}
@@ -320,7 +323,7 @@ $(function() {
 	}) //取消
 	$(".edit").click(function() {
 					
-				$('.slot > img').cropper('replace',$(".container img").attr("src"));
+		$('.slot > img').cropper('replace',$(".container img").attr("src"));
 		$(".btngroup").hide();
 
 		$(".fixed").show();
