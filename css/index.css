@@ -38,7 +38,7 @@ p {
 	z-index: 10;
 }
 .slot {
-	width: 60%;
+	width: 54%;
 	overflow: hidden;
 	margin: 0 auto;
 	margin-top: 20%;
@@ -48,7 +48,19 @@ p {
 	display: none;
 }
 
+.renews{
 
+width: 30%;
+height: 35px;
+line-height: 35px;
+margin: 0 auto;
+border: 1px solid #33B1A5;
+border-radius:5px ;
+text-align: center;
+margin-top: 15px;
+display: none;
+
+}
 .btngroup {
 	position: fixed;
 	bottom: 0;
@@ -71,6 +83,7 @@ p {
 .container img {
 	width: 100%;
 	height: 100%;
+	object-fit:cover;
 }
 
 .edit {
@@ -171,4 +184,15 @@ p {
 	margin-top: 50px;
 	display: inline-block;
 	margin-left: 4%;
+}
+#cropper{
+
+position: absolute;
+z-index: 1;
+border: 1px solid red;
+display: none;
+}
+.cropper-face{
+position: absolute;
+z-index: 10;
 }

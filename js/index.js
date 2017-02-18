@@ -186,6 +186,7 @@ $(function() {
 		return upload_token;
 	};
 	var policy = new Object();
+		var datanew= new Object();
 	var bucketName = "tapsbook";
 	var accessKey = "vZcav3MsPU7CoHGiHTeaYsW8FxfPPrI2QQBTGGTV";
 	var secretKey = "WpiUJrEMEmNnpPjvfX4HR8ii_iG2GphbU9uk4HEN";
@@ -204,6 +205,7 @@ $(function() {
 
 
 				crop: function(data) {
+					datanew=data;
 					// Output the result data for cropping image.
 			
 					json = [
@@ -213,10 +215,10 @@ $(function() {
 						'"width":' + data.width,
 						'"rotate":' + data.rotate + '}'
 					].join();
-
-					console.log(json);
-
-				}
+						console.log(json)
+			
+				}	
+		
 			});
 	var $key = $('#key'); // file name    eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
 	var $userfile = $('#userfile'); // the file you selected
@@ -323,7 +325,7 @@ $(function() {
 	}) //取消
 	$(".edit").click(function() {
 					
-		$('.slot > img').cropper('replace',$(".container img").attr("src"));
+		$('.slot > img').cropper('replace',url1);
 		$(".btngroup").hide();
 
 		$(".fixed").show();
@@ -340,7 +342,9 @@ $(function() {
 		$(".container").attr("for", "userfile");
 			$('.slot > img').cropper('reset',true);
 		$(".container").trigger('click');
+			$('#cropper').hide();
 		$(".btngroup").hide();
+		
 		
 //			var $image = $('.slot > img');
 //		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
@@ -366,6 +370,7 @@ $(function() {
 		$(".fixed").hide();
 		$(".fixed_head").hide();
 		$(".fixed_bottom").hide();
+		$('#cropper').show();
 
 		$(".page").show();
 		$(".slot").hide();
@@ -373,9 +378,19 @@ $(function() {
 		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
 		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
 		$(".container img").attr("src", imgurl);
-		$(".slot img").attr("src", imgurl);
+		$(".slot img").attr("src",url1);
 
-		$('.slot > img').cropper('replace', imgurl);
+	var a=$('.slot > img').cropper('getCropBoxData');
+	
+			$("#cropper").css({
+						"left":a.left+"px",
+						"top":a.top+'px',
+						"width":a.width+'px',
+						"height":a.height+'px',
+						})
+		$(".renews").show();
+	
+			
 
 	}) //确ding
 	$(".add").click(function() {
