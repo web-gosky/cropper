@@ -16,13 +16,13 @@ p {
 }
 
 .page {
-	width: 90%;
+	/*width: 90%;*/
 	margin: 0 auto;
-	min-height: 400px;
+	/*min-height: 400px;*/
 	background-color: #fff;
 	margin-top: 25px;
-	border-radius: 7px;
-	padding-top: 20px;
+	/*border-radius: 7px;
+	padding-top: 20px;*/
 }
 
 .container {
@@ -36,6 +36,8 @@ p {
 	display: block;
 	position: relative;
 	z-index: 10;
+	overflow: hidden;
+	
 }
 .slot {
 	width: 54%;

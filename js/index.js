@@ -23,6 +23,60 @@ $(function() {
 		$(".container").height(11 / 9 * Width);
 
 	});
+	$.ajax({
+		url: "http://templates.shiyi.co/api/v1/layouts/2007",
+		type: "get",
+
+		data: {
+
+		},
+		success: function(result) {
+			new list(result);
+			console.log(winWidth);
+
+		}
+	});
+	var list = function(result) {
+		this.data = result;
+		console.log(this.data)
+		this.init(); //新建JQ对象调用方法
+		var Pwidth = result.page.width;
+		var Pheight = result.page.height;
+		console.log(Pwidth);
+		console.log(Pheight);
+		console.log(winWidth * 0.9 * Pheight / Pwidth)
+
+	}; //模板异步渲染
+
+	var classesList = [
+
+		'<div class="page" style="width:'+winWidth*0.9+'px;height:{{Pheight(width,height)}}px">',
+		'{{each slots as value i}}',
+		'<label class="container" for="userfile" js="{{value.id}}" style="width:{{swidth(value.center_x,value.width)}}%;height:{{swidth(value.center_y,value.height)}}%;',
+		'left:{{sleft(value.center_x,value.content_width,value.width)}}%;top:{{sleft(value.center_y,value.content_height,value.height)}}%;transform{{value.rotation}}deg">',
+		'<img src="">',
+		'</label>',
+		'{{/each}}',
+		'</div>',
+
+	].join(''); //拼接
+	list.prototype.init = function() {
+		template.helper('Pheight', function(w, h) {
+			
+			return winWidth*0.9*h / w;
+		});//page 的 高度获取
+		template.helper('swidth', function(w, w1) {
+			
+			return w/w1*100;
+		});//slots宽高的计算
+		template.helper('sleft', function(x,w,w1) {
+			
+			return (x-w/2)/w1*100;
+		});//slots lposition的计算
+		var render = template.compile(classesList);
+		var html1 = render(this.data.page);
+		$('.zero').html(html1);
+	}
 
 	function utf16to8(str) {
 		var out, i, len, c;
@@ -186,7 +240,7 @@ $(function() {
 		return upload_token;
 	};
 	var policy = new Object();
-		var datanew= new Object();
+	var datanew = new Object();
 	var bucketName = "tapsbook";
 	var accessKey = "vZcav3MsPU7CoHGiHTeaYsW8FxfPPrI2QQBTGGTV";
 	var secretKey = "WpiUJrEMEmNnpPjvfX4HR8ii_iG2GphbU9uk4HEN";
@@ -197,29 +251,28 @@ $(function() {
 	console && console.log("token=", token);
 	$("#token").val(token)
 	//生成token
-			$('.slot img').cropper({ //不同
-				//preview: ".container",
-				aspectRatio: 202 / 247, //裁剪比例，NaN-自由选择区域
-				modal: false,
-				resizable: false,
+	$('.slot img').cropper({ //不同
+		//preview: ".container",
+		aspectRatio: 202 / 247, //裁剪比例，NaN-自由选择区域
+		modal: false,
+		resizable: false,
 
+		crop: function(data) {
+			datanew = data;
+			// Output the result data for cropping image.
 
-				crop: function(data) {
-					datanew=data;
-					// Output the result data for cropping image.
-			
-					json = [
-						'{"x":' + data.x,
-						'"y":' + data.y,
-						'"height":' + data.height,
-						'"width":' + data.width,
-						'"rotate":' + data.rotate + '}'
-					].join();
-						console.log(json)
-			
-				}	
-		
-			});
+			json = [
+				'{"x":' + data.x,
+				'"y":' + data.y,
+				'"height":' + data.height,
+				'"width":' + data.width,
+				'"rotate":' + data.rotate + '}'
+			].join();
+			console.log(json)
+
+		}
+
+	});
 	var $key = $('#key'); // file name    eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
 	var $userfile = $('#userfile'); // the file you selected
 	var $selectedFile = $('.selected-file');
@@ -238,8 +291,8 @@ $(function() {
 			//选择图片后重新初始裁剪区
 			$('.container img').attr('src', url1);
 			$('.slot img').attr('src', url1);
-						
-	$("#bar").show();
+
+			$("#bar").show();
 		};
 		reader.readAsDataURL(file);
 		//		$.ajax({
@@ -286,9 +339,9 @@ $(function() {
 							$("#bar").html(+percent.toFixed(2) + "%");
 							if(percent.toFixed(2) == 100) {
 								$("#bar").html("上传成功");
-								setTimeout(function(){
+								setTimeout(function() {
 									$("#bar").hide();
-								},3000)
+								}, 3000)
 							}
 
 						}
@@ -312,11 +365,11 @@ $(function() {
 		});
 		return false;
 	});
-	$(".container").click(function() {
+	$("body").on("click",".container",function() {
 		if($(this).attr("for") == "") {
 			$(".btngroup").show();
 		} else {
-
+//				$('#userfile').trigger('click');
 		}
 	})
 	var json;
@@ -324,8 +377,8 @@ $(function() {
 		$(".btngroup").hide();
 	}) //取消
 	$(".edit").click(function() {
-					
-		$('.slot > img').cropper('replace',url1);
+
+		$('.slot > img').cropper('replace', url1);
 		$(".btngroup").hide();
 
 		$(".fixed").show();
@@ -336,24 +389,20 @@ $(function() {
 
 		$(".page").hide();
 
-
 	}) //编辑照片
 	$(".new").click(function() {
 		$(".container").attr("for", "userfile");
-			$('.slot > img').cropper('reset',true);
+		$('.slot > img').cropper('reset', true);
 		$(".container").trigger('click');
-			$('#cropper').hide();
+		$('#cropper').hide();
 		$(".btngroup").hide();
-		
-		
-//			var $image = $('.slot > img');
-//		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
-//		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
-//		$(".container img").attr("src", imgurl);
-//		$(".slot img").attr("src", imgurl);
-//
 
-		
+		//			var $image = $('.slot > img');
+		//		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
+		//		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
+		//		$(".container img").attr("src", imgurl);
+		//		$(".slot img").attr("src", imgurl);
+		//
 
 	}) //重新上传
 
@@ -378,19 +427,17 @@ $(function() {
 		var dataURL = $image.cropper("getCroppedCanvas"); //找死了
 		var imgurl = dataURL.toDataURL("image/png", 1.0); //这里转成base64 image，img的src可直接使用
 		$(".container img").attr("src", imgurl);
-		$(".slot img").attr("src",url1);
+		$(".slot img").attr("src", url1);
 
-	var a=$('.slot > img').cropper('getCropBoxData');
-	
-			$("#cropper").css({
-						"left":a.left+"px",
-						"top":a.top+'px',
-						"width":a.width+'px',
-						"height":a.height+'px',
-						})
+		var a = $('.slot > img').cropper('getCropBoxData');
+
+		$("#cropper").css({
+			"left": a.left + "px",
+			"top": a.top + 'px',
+			"width": a.width + 'px',
+			"height": a.height + 'px',
+		})
 		$(".renews").show();
-	
-			
 
 	}) //确ding
 	$(".add").click(function() {
